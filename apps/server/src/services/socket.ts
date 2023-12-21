@@ -2,10 +2,10 @@ import { Server } from "socket.io";
 import Redis from "ioredis";
 
 const pub = new Redis({
-  host: "redis-2ab29e84-aditya-chat-application.a.aivencloud.com",
+  host: process.env.PORT_NUMBER,
   port: 18341,
   username: "default",
-  password: "AVNS_-FOAbdY2OpUJBGK0_SH",
+  password: process.env.REDIS_PASSWORD,
 });
 const sub = new Redis({
   host: "redis-2ab29e84-aditya-chat-application.a.aivencloud.com",
@@ -37,11 +37,11 @@ class SocketService {
         await pub.publish("MESSAGES", JSON.stringify({ message }));
       });
     });
-    sub.on('message',(channel,message)=>{
-      if(channel==='MESSAGES'){
-        io.emit('message',message)
+    sub.on("message", (channel, message) => {
+      if (channel === "MESSAGES") {
+        io.emit("message", message);
       }
-    })
+    });
   }
   get io() {
     return this._io;
